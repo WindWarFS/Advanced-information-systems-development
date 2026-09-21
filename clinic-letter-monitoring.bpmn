@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?><bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_ClinicLetter" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Kimi Work" exporterVersion="3.0">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Letter" name="Hospital - Clinic Letter Process" processRef="Process_ClinicLetter"/>
+    <bpmn:participant id="Participant_Correspondence3" name="Correspondence Service / GP"/>
+    <bpmn:messageFlow id="MF_C1" name="Letter dispatched; copy sent to GP" sourceRef="Task_SendLetter" targetRef="Participant_Correspondence3"/>
+    <bpmn:messageFlow id="MF_C2" name="Urgent dispatch" sourceRef="Task_SendUrgently" targetRef="Participant_Correspondence3"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Process_ClinicLetter" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_Consultants" name="Consultants">
+        <bpmn:flowNodeRef>StartEvent_ConsultationDone</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_DictateLetter</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ApproveLetter</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Approved</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Secretaries" name="Medical Secretaries">
+        <bpmn:flowNodeRef>Task_PrepareLetter</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SendLetter</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_FollowUp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_LetterSent</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SendUrgently</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_BookFollowUp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_FollowUpBooked</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Coordinators" name="Patient Pathway Coordinators">
+        <bpmn:flowNodeRef>Task_EscalateOverdue</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_ConsultationDone" name="Consultation completed"/>
+    <bpmn:task id="Task_DictateLetter" name="Dictate clinic letter"/>
+    <bpmn:task id="Task_ApproveLetter" name="Review and approve clinic letter"/>
+    <bpmn:exclusiveGateway id="Gateway_Approved" name="Letter approved?"/>
+    <bpmn:task id="Task_PrepareLetter" name="Prepare clinic letter"/>
+    <bpmn:task id="Task_SendLetter" name="Send clinic letter"/>
+    <bpmn:boundaryEvent id="Boundary_Timer7Days" name="7 days without dispatch" attachedToRef="Task_SendLetter" cancelActivity="false">
+      <bpmn:timerEventDefinition id="TED_Boundary_Timer7Days">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P7D</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:exclusiveGateway id="Gateway_FollowUp" name="Follow-up needed?"/>
+    <bpmn:endEvent id="EndEvent_LetterSent" name="Letter sent"/>
+    <bpmn:task id="Task_SendUrgently" name="Send letter urgently"/>
+    <bpmn:task id="Task_BookFollowUp" name="Book follow-up appointment"/>
+    <bpmn:endEvent id="EndEvent_FollowUpBooked" name="Follow-up booked"/>
+    <bpmn:task id="Task_EscalateOverdue" name="Flag overdue letter and escalate"/>
+    <bpmn:sequenceFlow id="Flow_L1" sourceRef="StartEvent_ConsultationDone" targetRef="Task_DictateLetter"/>
+    <bpmn:sequenceFlow id="Flow_L2" sourceRef="Task_DictateLetter" targetRef="Task_PrepareLetter"/>
+    <bpmn:sequenceFlow id="Flow_L3" sourceRef="Task_PrepareLetter" targetRef="Task_ApproveLetter"/>
+    <bpmn:sequenceFlow id="Flow_L4" sourceRef="Task_ApproveLetter" targetRef="Gateway_Approved"/>
+    <bpmn:sequenceFlow id="Flow_L5" name="Approved" sourceRef="Gateway_Approved" targetRef="Task_SendLetter"/>
+    <bpmn:sequenceFlow id="Flow_L6" name="Changes needed" sourceRef="Gateway_Approved" targetRef="Task_PrepareLetter"/>
+    <bpmn:sequenceFlow id="Flow_L7" sourceRef="Task_SendLetter" targetRef="Gateway_FollowUp"/>
+    <bpmn:sequenceFlow id="Flow_L8" name="No follow-up needed" sourceRef="Gateway_FollowUp" targetRef="EndEvent_LetterSent"/>
+    <bpmn:sequenceFlow id="Flow_L9" name="Follow-up required" sourceRef="Gateway_FollowUp" targetRef="Task_BookFollowUp"/>
+    <bpmn:sequenceFlow id="Flow_L10" sourceRef="Task_BookFollowUp" targetRef="EndEvent_FollowUpBooked"/>
+    <bpmn:sequenceFlow id="Flow_L11" sourceRef="Boundary_Timer7Days" targetRef="Task_EscalateOverdue"/>
+    <bpmn:sequenceFlow id="Flow_L12" sourceRef="Task_EscalateOverdue" targetRef="Task_SendUrgently"/>
+    <bpmn:sequenceFlow id="Flow_L13" name="Letter dispatched" sourceRef="Task_SendUrgently" targetRef="Gateway_FollowUp"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Letter_di" bpmnElement="Participant_Letter" isHorizontal="true">
+        <dc:Bounds x="160" y="90" width="1720" height="500"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Correspondence3_di" bpmnElement="Participant_Correspondence3" isHorizontal="true">
+        <dc:Bounds x="160" y="650" width="1720" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Consultants_di" bpmnElement="Lane_Consultants" isHorizontal="true">
+        <dc:Bounds x="190" y="90" width="1690" height="140"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Secretaries_di" bpmnElement="Lane_Secretaries" isHorizontal="true">
+        <dc:Bounds x="190" y="230" width="1690" height="240"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Coordinators_di" bpmnElement="Lane_Coordinators" isHorizontal="true">
+        <dc:Bounds x="190" y="470" width="1690" height="120"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_ConsultationDone_di" bpmnElement="StartEvent_ConsultationDone">
+        <dc:Bounds x="232" y="132" width="36" height="36"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="208.8" y="171.0" width="82.4" height="33.0"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DictateLetter_di" bpmnElement="Task_DictateLetter">
+        <dc:Bounds x="420" y="110" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveLetter_di" bpmnElement="Task_ApproveLetter">
+        <dc:Bounds x="860" y="110" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Approved_di" bpmnElement="Gateway_Approved" isMarkerVisible="true">
+        <dc:Bounds x="1105" y="125" width="50" height="50"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="1135.0" y="169.0" width="63.8" height="33.0"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareLetter_di" bpmnElement="Task_PrepareLetter">
+        <dc:Bounds x="640" y="230" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendLetter_di" bpmnElement="Task_SendLetter">
+        <dc:Bounds x="1300" y="230" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Boundary_Timer7Days_di" bpmnElement="Boundary_Timer7Days">
+        <dc:Bounds x="1332" y="292" width="36" height="36"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="1286.6" y="315.0" width="94.8" height="33.0"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FollowUp_di" bpmnElement="Gateway_FollowUp" isMarkerVisible="true">
+        <dc:Bounds x="1545" y="245" width="50" height="50"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="1538.1" y="298.0" width="63.8" height="33.0"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_LetterSent_di" bpmnElement="EndEvent_LetterSent">
+        <dc:Bounds x="1772" y="252" width="36" height="36"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="1751.9" y="291.0" width="76.2" height="19.5"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendUrgently_di" bpmnElement="Task_SendUrgently">
+        <dc:Bounds x="1300" y="350" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BookFollowUp_di" bpmnElement="Task_BookFollowUp">
+        <dc:Bounds x="1520" y="350" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_FollowUpBooked_di" bpmnElement="EndEvent_FollowUpBooked">
+        <dc:Bounds x="1772" y="372" width="36" height="36"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="1758.1" y="411.0" width="63.8" height="33.0"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EscalateOverdue_di" bpmnElement="Task_EscalateOverdue">
+        <dc:Bounds x="1300" y="470" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_L1_di" bpmnElement="Flow_L1">
+        <di:waypoint x="268" y="150"/>
+        <di:waypoint x="420" y="150"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L2_di" bpmnElement="Flow_L2">
+        <di:waypoint x="470" y="190"/>
+        <di:waypoint x="470" y="270"/>
+        <di:waypoint x="640" y="270"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L3_di" bpmnElement="Flow_L3">
+        <di:waypoint x="690" y="230"/>
+        <di:waypoint x="690" y="150"/>
+        <di:waypoint x="860" y="150"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L4_di" bpmnElement="Flow_L4">
+        <di:waypoint x="960" y="150"/>
+        <di:waypoint x="1105" y="150"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L5_di" bpmnElement="Flow_L5">
+        <di:waypoint x="1130" y="175"/>
+        <di:waypoint x="1130" y="270"/>
+        <di:waypoint x="1300" y="270"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1159" y="213" width="62" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L6_di" bpmnElement="Flow_L6">
+        <di:waypoint x="1130" y="125"/>
+        <di:waypoint x="1130" y="100"/>
+        <di:waypoint x="590" y="100"/>
+        <di:waypoint x="590" y="270"/>
+        <di:waypoint x="640" y="270"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="750.0" y="71.0" width="100" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L7_di" bpmnElement="Flow_L7">
+        <di:waypoint x="1400" y="270"/>
+        <di:waypoint x="1545" y="270"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L8_di" bpmnElement="Flow_L8">
+        <di:waypoint x="1595" y="270"/>
+        <di:waypoint x="1772" y="270"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1617" y="243" width="132" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L9_di" bpmnElement="Flow_L9">
+        <di:waypoint x="1570" y="295"/>
+        <di:waypoint x="1570" y="350"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1617" y="318" width="126" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L10_di" bpmnElement="Flow_L10">
+        <di:waypoint x="1620" y="390"/>
+        <di:waypoint x="1772" y="390"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L11_di" bpmnElement="Flow_L11">
+        <di:waypoint x="1332" y="310"/>
+        <di:waypoint x="1260" y="310"/>
+        <di:waypoint x="1260" y="510"/>
+        <di:waypoint x="1300" y="510"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L12_di" bpmnElement="Flow_L12">
+        <di:waypoint x="1350" y="470"/>
+        <di:waypoint x="1350" y="430"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_L13_di" bpmnElement="Flow_L13">
+        <di:waypoint x="1350" y="350"/>
+        <di:waypoint x="1350" y="330"/>
+        <di:waypoint x="1585" y="330"/>
+        <di:waypoint x="1585" y="295"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1401" y="305" width="119" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_C1_di" bpmnElement="MF_C1">
+        <di:waypoint x="1315" y="310"/>
+        <di:waypoint x="1315" y="330"/>
+        <di:waypoint x="1290" y="330"/>
+        <di:waypoint x="1290" y="650"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1026" y="493" width="228" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_C2_di" bpmnElement="MF_C2">
+        <di:waypoint x="1320" y="430"/>
+        <di:waypoint x="1320" y="450"/>
+        <di:waypoint x="1240" y="450"/>
+        <di:waypoint x="1240" y="650"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1082" y="553" width="106" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

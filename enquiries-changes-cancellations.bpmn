@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?><bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_Enquiries" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Kimi Work" exporterVersion="3.0">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Enquiries" name="Hospital - Enquiries" processRef="Process_Enquiries"/>
+    <bpmn:participant id="Participant_Patient" name="Patient"/>
+    <bpmn:messageFlow id="MF_P1" name="Enquiry call" sourceRef="Participant_Patient" targetRef="StartEvent_EnquiryCall"/>
+    <bpmn:messageFlow id="MF_P2" name="Outcome confirmation" sourceRef="Task_ConfirmPatient" targetRef="Participant_Patient"/>
+    <bpmn:messageFlow id="MF_P3" name="Clinical advice call" sourceRef="Task_CNSContact" targetRef="Participant_Patient"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Enquiries" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_CallHandling" name="Call Handling Team">
+        <bpmn:flowNodeRef>StartEvent_EnquiryCall</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_LogEnquiry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_EnquiryType</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_UpdateBooking</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_PaymentInvolved</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ConfirmPatient</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Resolved</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AnswerAdmin</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_CNS" name="Clinical Nurse Specialist Team">
+        <bpmn:flowNodeRef>Task_CNSContact</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Finance" name="Finance Team">
+        <bpmn:flowNodeRef>Task_ProcessRefund</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_EnquiryCall" name="Patient call / enquiry received">
+      <bpmn:messageEventDefinition id="MED_StartEvent_EnquiryCall"/>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_LogEnquiry" name="Log and sort enquiry"/>
+    <bpmn:exclusiveGateway id="Gateway_EnquiryType" name="Enquiry type?"/>
+    <bpmn:task id="Task_UpdateBooking" name="Update or cancel booking"/>
+    <bpmn:exclusiveGateway id="Gateway_PaymentInvolved" name="Payment involved?"/>
+    <bpmn:task id="Task_ConfirmPatient" name="Confirm outcome to patient"/>
+    <bpmn:endEvent id="EndEvent_Resolved" name="Enquiry resolved"/>
+    <bpmn:task id="Task_AnswerAdmin" name="Answer administrative query directly"/>
+    <bpmn:task id="Task_CNSContact" name="Contact patient; answer clinical question"/>
+    <bpmn:task id="Task_ProcessRefund" name="Process refund"/>
+    <bpmn:sequenceFlow id="Flow_E1" sourceRef="StartEvent_EnquiryCall" targetRef="Task_LogEnquiry"/>
+    <bpmn:sequenceFlow id="Flow_E2" sourceRef="Task_LogEnquiry" targetRef="Gateway_EnquiryType"/>
+    <bpmn:sequenceFlow id="Flow_E3" name="Simple administrative query" sourceRef="Gateway_EnquiryType" targetRef="Task_AnswerAdmin"/>
+    <bpmn:sequenceFlow id="Flow_E4" sourceRef="Task_AnswerAdmin" targetRef="Task_ConfirmPatient"/>
+    <bpmn:sequenceFlow id="Flow_E5" name="Clinical question" sourceRef="Gateway_EnquiryType" targetRef="Task_CNSContact"/>
+    <bpmn:sequenceFlow id="Flow_E6" sourceRef="Task_CNSContact" targetRef="Task_ConfirmPatient"/>
+    <bpmn:sequenceFlow id="Flow_E7" name="Change / cancel" sourceRef="Gateway_EnquiryType" targetRef="Task_UpdateBooking"/>
+    <bpmn:sequenceFlow id="Flow_E8" sourceRef="Task_UpdateBooking" targetRef="Gateway_PaymentInvolved"/>
+    <bpmn:sequenceFlow id="Flow_E9" name="No payment involved" sourceRef="Gateway_PaymentInvolved" targetRef="Task_ConfirmPatient"/>
+    <bpmn:sequenceFlow id="Flow_E10" name="Refund required" sourceRef="Gateway_PaymentInvolved" targetRef="Task_ProcessRefund"/>
+    <bpmn:sequenceFlow id="Flow_E11" name="Refund processed" sourceRef="Task_ProcessRefund" targetRef="Task_ConfirmPatient"/>
+    <bpmn:sequenceFlow id="Flow_E12" sourceRef="Task_ConfirmPatient" targetRef="EndEvent_Resolved"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Enquiries_di" bpmnElement="Participant_Enquiries" isHorizontal="true">
+        <dc:Bounds x="160" y="90" width="1520" height="480"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Patient_di" bpmnElement="Participant_Patient" isHorizontal="true">
+        <dc:Bounds x="160" y="10" width="1520" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_CallHandling_di" bpmnElement="Lane_CallHandling" isHorizontal="true">
+        <dc:Bounds x="190" y="90" width="1490" height="240"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_CNS_di" bpmnElement="Lane_CNS" isHorizontal="true">
+        <dc:Bounds x="190" y="330" width="1490" height="120"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Finance_di" bpmnElement="Lane_Finance" isHorizontal="true">
+        <dc:Bounds x="190" y="450" width="1490" height="120"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_EnquiryCall_di" bpmnElement="StartEvent_EnquiryCall">
+        <dc:Bounds x="232" y="252" width="36" height="36"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="202.6" y="291.0" width="94.8" height="46.5"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LogEnquiry_di" bpmnElement="Task_LogEnquiry">
+        <dc:Bounds x="420" y="230" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_EnquiryType_di" bpmnElement="Gateway_EnquiryType" isMarkerVisible="true">
+        <dc:Bounds x="665" y="245" width="50" height="50"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="695.0" y="289.0" width="88.6" height="19.5"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UpdateBooking_di" bpmnElement="Task_UpdateBooking">
+        <dc:Bounds x="860" y="230" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PaymentInvolved_di" bpmnElement="Gateway_PaymentInvolved" isMarkerVisible="true">
+        <dc:Bounds x="1105" y="245" width="50" height="50"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="1135.0" y="289.0" width="63.8" height="33.0"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConfirmPatient_di" bpmnElement="Task_ConfirmPatient">
+        <dc:Bounds x="1300" y="230" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Resolved_di" bpmnElement="EndEvent_Resolved">
+        <dc:Bounds x="1552" y="252" width="36" height="36"/>
+      <bpmndi:BPMNLabel><dc:Bounds x="1541.2" y="291.0" width="57.6" height="33.0"/></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AnswerAdmin_di" bpmnElement="Task_AnswerAdmin">
+        <dc:Bounds x="860" y="110" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CNSContact_di" bpmnElement="Task_CNSContact">
+        <dc:Bounds x="1080" y="350" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProcessRefund_di" bpmnElement="Task_ProcessRefund">
+        <dc:Bounds x="1080" y="470" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_E1_di" bpmnElement="Flow_E1">
+        <di:waypoint x="268" y="270"/>
+        <di:waypoint x="420" y="270"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E2_di" bpmnElement="Flow_E2">
+        <di:waypoint x="520" y="270"/>
+        <di:waypoint x="665" y="270"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E3_di" bpmnElement="Flow_E3">
+        <di:waypoint x="690" y="245"/>
+        <di:waypoint x="690" y="150"/>
+        <di:waypoint x="860" y="150"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="684.0" y="83.0" width="183" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E4_di" bpmnElement="Flow_E4">
+        <di:waypoint x="960" y="150"/>
+        <di:waypoint x="1335" y="150"/>
+        <di:waypoint x="1335" y="230"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E5_di" bpmnElement="Flow_E5">
+        <di:waypoint x="690" y="295"/>
+        <di:waypoint x="690" y="390"/>
+        <di:waypoint x="1080" y="390"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="741" y="365" width="119" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E6_di" bpmnElement="Flow_E6">
+        <di:waypoint x="1180" y="390"/>
+        <di:waypoint x="1350" y="390"/>
+        <di:waypoint x="1350" y="310"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E7_di" bpmnElement="Flow_E7">
+        <di:waypoint x="715" y="270"/>
+        <di:waypoint x="860" y="270"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="734" y="243" width="106" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E8_di" bpmnElement="Flow_E8">
+        <di:waypoint x="960" y="270"/>
+        <di:waypoint x="1105" y="270"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E9_di" bpmnElement="Flow_E9">
+        <di:waypoint x="1155" y="270"/>
+        <di:waypoint x="1300" y="270"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1161" y="243" width="132" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E10_di" bpmnElement="Flow_E10">
+        <di:waypoint x="1130" y="295"/>
+        <di:waypoint x="1130" y="470"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1142" y="433" width="106" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E11_di" bpmnElement="Flow_E11">
+        <di:waypoint x="1180" y="510"/>
+        <di:waypoint x="1370" y="510"/>
+        <di:waypoint x="1370" y="310"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1204" y="525" width="113" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_E12_di" bpmnElement="Flow_E12">
+        <di:waypoint x="1400" y="270"/>
+        <di:waypoint x="1552" y="270"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_P1_di" bpmnElement="MF_P1">
+        <di:waypoint x="250" y="70"/>
+        <di:waypoint x="250" y="252"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="277" y="153" width="87" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_P2_di" bpmnElement="MF_P2">
+        <di:waypoint x="1365" y="230"/>
+        <di:waypoint x="1365" y="70"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1386" y="143" width="138" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_P3_di" bpmnElement="MF_P3">
+        <di:waypoint x="1090" y="350"/>
+        <di:waypoint x="1090" y="70"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="916" y="193" width="138" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
