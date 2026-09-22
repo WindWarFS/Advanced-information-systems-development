@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_Consultation" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+  <bpmn:collaboration id="Collaboration_Consultation">
+    <bpmn:participant id="Participant_Patient" name="Patient" />
+    <bpmn:participant id="Participant_Hospital" name="Hospital" processRef="Process_Consultation" />
+    <bpmn:messageFlow id="MessageFlow_Attendance" name="Appointment attendance" sourceRef="Participant_Patient" targetRef="Task_AssessPatient" />
+    <bpmn:messageFlow id="MessageFlow_Options" name="Treatment options" sourceRef="Task_ExplainOptions" targetRef="Participant_Patient" />
+    <bpmn:messageFlow id="MessageFlow_Support" name="Clinical advice and support" sourceRef="Task_ProvideSupport" targetRef="Participant_Patient" />
+    <bpmn:messageFlow id="MessageFlow_Consent" name="Patient consent" sourceRef="Participant_Patient" targetRef="Task_RecordConsent" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Consultation" name="Consultation, Consent and Treatment Request" isExecutable="true" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+    <bpmn:laneSet id="LaneSet_Consultation">
+      <bpmn:lane id="Lane_Finance" name="Finance Team">
+        <bpmn:flowNodeRef>Task_CheckFunding</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Consultation</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_TreatmentBookings" name="Treatment / Chemo Bookings Team">
+        <bpmn:flowNodeRef>Task_ReceiveRequest</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_CNS" name="Clinical Nurse Specialist Team">
+        <bpmn:flowNodeRef>Task_ProvideSupport</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Consultant" name="Consultant">
+        <bpmn:flowNodeRef>StartEvent_Consultation</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AssessPatient</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ExplainOptions</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RecordConsent</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AuthoriseTreatment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CreateRequest</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_Consultation" name="Consultation starts">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_AssessPatient" name="Assess patient">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_ExplainOptions" name="Explain treatment options">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_ProvideSupport" name="Provide clinical advice and support">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_RecordConsent" name="Record patient consent">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_AuthoriseTreatment" name="Authorise treatment">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_CreateRequest" name="Create treatment request">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:receiveTask id="Task_ReceiveRequest" name="Receive treatment request">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:userTask id="Task_CheckFunding" name="Check funding or payment">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_Consultation" name="Funding check started">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:dataObjectReference id="DataObjectReference_TreatmentRequest" name="Treatment request" dataObjectRef="DataObject_TreatmentRequest" />
+    <bpmn:dataObject id="DataObject_TreatmentRequest" name="Treatment request" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_Consultation" targetRef="Task_AssessPatient" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_AssessPatient" targetRef="Task_ExplainOptions" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_ExplainOptions" targetRef="Task_ProvideSupport" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_ProvideSupport" targetRef="Task_RecordConsent" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_RecordConsent" targetRef="Task_AuthoriseTreatment" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_AuthoriseTreatment" targetRef="Task_CreateRequest" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_CreateRequest" targetRef="Task_ReceiveRequest" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_ReceiveRequest" targetRef="Task_CheckFunding" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_CheckFunding" targetRef="EndEvent_Consultation" />
+    <bpmn:association id="Association_TreatmentRequest" sourceRef="Task_CreateRequest" targetRef="DataObjectReference_TreatmentRequest" />
+    <bpmn:association id="Association_RequestInput" sourceRef="DataObjectReference_TreatmentRequest" targetRef="Task_ReceiveRequest" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Consultation">
+    <bpmndi:BPMNPlane id="BPMNPlane_Consultation" bpmnElement="Collaboration_Consultation">
+      <bpmndi:BPMNShape id="Participant_Patient_di" bpmnElement="Participant_Patient" isHorizontal="true">
+        <dc:Bounds x="150" y="60" width="1760" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Hospital_di" bpmnElement="Participant_Hospital" isHorizontal="true">
+        <dc:Bounds x="150" y="200" width="1760" height="480" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Finance_di" bpmnElement="Lane_Finance" isHorizontal="true">
+        <dc:Bounds x="180" y="560" width="1730" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_TreatmentBookings_di" bpmnElement="Lane_TreatmentBookings" isHorizontal="true">
+        <dc:Bounds x="180" y="440" width="1730" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_CNS_di" bpmnElement="Lane_CNS" isHorizontal="true">
+        <dc:Bounds x="180" y="320" width="1730" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Consultant_di" bpmnElement="Lane_Consultant" isHorizontal="true">
+        <dc:Bounds x="180" y="200" width="1730" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Consultation_di" bpmnElement="StartEvent_Consultation">
+        <dc:Bounds x="225" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="212" y="282" width="62" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessPatient_di" bpmnElement="Task_AssessPatient">
+        <dc:Bounds x="310" y="220" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExplainOptions_di" bpmnElement="Task_ExplainOptions">
+        <dc:Bounds x="480" y="220" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideSupport_di" bpmnElement="Task_ProvideSupport">
+        <dc:Bounds x="670" y="340" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordConsent_di" bpmnElement="Task_RecordConsent">
+        <dc:Bounds x="880" y="220" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AuthoriseTreatment_di" bpmnElement="Task_AuthoriseTreatment">
+        <dc:Bounds x="1070" y="220" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CreateRequest_di" bpmnElement="Task_CreateRequest">
+        <dc:Bounds x="1260" y="220" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveRequest_di" bpmnElement="Task_ReceiveRequest">
+        <dc:Bounds x="1450" y="460" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckFunding_di" bpmnElement="Task_CheckFunding">
+        <dc:Bounds x="1650" y="580" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Consultation_di" bpmnElement="EndEvent_Consultation">
+        <dc:Bounds x="1830" y="602" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1812" y="642" width="72" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_TreatmentRequest_di" bpmnElement="DataObjectReference_TreatmentRequest">
+        <dc:Bounds x="1330" y="350" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1303" y="405" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="261" y="260" />
+        <di:waypoint x="310" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="430" y="260" />
+        <di:waypoint x="480" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="620" y="260" />
+        <di:waypoint x="645" y="260" />
+        <di:waypoint x="645" y="380" />
+        <di:waypoint x="670" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="830" y="380" />
+        <di:waypoint x="855" y="380" />
+        <di:waypoint x="855" y="260" />
+        <di:waypoint x="880" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1020" y="260" />
+        <di:waypoint x="1070" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1210" y="260" />
+        <di:waypoint x="1260" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1400" y="260" />
+        <di:waypoint x="1425" y="260" />
+        <di:waypoint x="1425" y="500" />
+        <di:waypoint x="1450" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1600" y="500" />
+        <di:waypoint x="1625" y="500" />
+        <di:waypoint x="1625" y="620" />
+        <di:waypoint x="1650" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1790" y="620" />
+        <di:waypoint x="1830" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_TreatmentRequest_di" bpmnElement="Association_TreatmentRequest">
+        <di:waypoint x="1330" y="300" />
+        <di:waypoint x="1348" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_RequestInput_di" bpmnElement="Association_RequestInput">
+        <di:waypoint x="1366" y="375" />
+        <di:waypoint x="1450" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_Attendance_di" bpmnElement="MessageFlow_Attendance">
+        <di:waypoint x="370" y="140" />
+        <di:waypoint x="370" y="220" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="380" y="155" width="120" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_Options_di" bpmnElement="MessageFlow_Options">
+        <di:waypoint x="550" y="220" />
+        <di:waypoint x="550" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="566" y="155" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_Support_di" bpmnElement="MessageFlow_Support">
+        <di:waypoint x="750" y="340" />
+        <di:waypoint x="750" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="762" y="170" width="132" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_Consent_di" bpmnElement="MessageFlow_Consent">
+        <di:waypoint x="950" y="140" />
+        <di:waypoint x="950" y="220" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="967" y="155" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

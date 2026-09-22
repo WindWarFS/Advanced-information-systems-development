@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_Referral" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+  <bpmn:collaboration id="Collaboration_Referral">
+    <bpmn:participant id="Participant_Referrer" name="Referring GP / Hospital" />
+    <bpmn:participant id="Participant_Hospital" name="Hospital" processRef="Process_Referral" />
+    <bpmn:messageFlow id="MessageFlow_SendReferral" name="Referral and clinical information" sourceRef="Participant_Referrer" targetRef="Task_ReceiveReferral" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Referral" name="Complete Referral and Clinical Review" isExecutable="true" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+    <bpmn:laneSet id="LaneSet_Referral">
+      <bpmn:lane id="Lane_Secretary" name="Medical Secretary">
+        <bpmn:flowNodeRef>Task_ReceiveReferral</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_UpdateStatus</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ReceiveMissingInfo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RequestMissingInfo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_DocComplete</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CheckDocuments</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_Referral</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Consultant" name="Consultant">
+        <bpmn:flowNodeRef>Task_AcceptReferral</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_ReferralDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ReviewReferral</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_OutpatientBookings" name="Outpatient Bookings Team">
+        <bpmn:flowNodeRef>EndEvent_Referral</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_BeginBooking</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_NotAccepted</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:receiveTask id="Task_ReceiveReferral" name="Receive referral">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_Referral" targetRef="Task_ReceiveReferral" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_ReceiveReferral" targetRef="Task_CheckDocuments" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_CheckDocuments" targetRef="Gateway_DocComplete" />
+    <bpmn:sequenceFlow id="Flow_DocYes" name="Yes" sourceRef="Gateway_DocComplete" targetRef="Task_ReviewReferral" />
+    <bpmn:sequenceFlow id="Flow_DocNo" name="No" sourceRef="Gateway_DocComplete" targetRef="Task_RequestMissingInfo" />
+    <bpmn:sequenceFlow id="Flow_RequestMissing" sourceRef="Task_RequestMissingInfo" targetRef="Task_ReceiveMissingInfo" />
+    <bpmn:sequenceFlow id="Flow_Recheck" sourceRef="Task_ReceiveMissingInfo" targetRef="Task_CheckDocuments" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_ReviewReferral" targetRef="Gateway_ReferralDecision" />
+    <bpmn:sequenceFlow id="Flow_Accepted" name="Accept" sourceRef="Gateway_ReferralDecision" targetRef="Task_AcceptReferral" />
+    <bpmn:sequenceFlow id="Flow_NotAccepted" name="Reject / redirect / more information" sourceRef="Gateway_ReferralDecision" targetRef="EndEvent_NotAccepted" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_AcceptReferral" targetRef="Task_UpdateStatus" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_UpdateStatus" targetRef="Task_BeginBooking" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_BeginBooking" targetRef="EndEvent_Referral" />
+    <bpmn:dataObject id="DataObject_Referral" name="Referral and clinical documents" />
+    <bpmn:dataObjectReference id="DataObjectReference_Referral" name="Referral documents" dataObjectRef="DataObject_Referral" />
+    <bpmn:endEvent id="EndEvent_Referral" name="Referral accepted">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_BeginBooking" name="Begin appointment booking">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_UpdateStatus" name="Update referral status">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_AcceptReferral" name="Accept referral">
+      <bpmn:incoming>Flow_Accepted</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_NotAccepted" name="Referral not accepted">
+      <bpmn:incoming>Flow_NotAccepted</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_ReferralDecision" name="Referral accepted?">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Accepted</bpmn:outgoing>
+      <bpmn:outgoing>Flow_NotAccepted</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:receiveTask id="Task_ReceiveMissingInfo" name="Receive missing information">
+      <bpmn:incoming>Flow_RequestMissing</bpmn:incoming>
+      <bpmn:outgoing>Flow_Recheck</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:userTask id="Task_RequestMissingInfo" name="Request missing information">
+      <bpmn:incoming>Flow_DocNo</bpmn:incoming>
+      <bpmn:outgoing>Flow_RequestMissing</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_DocComplete" name="Referral complete?">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_DocYes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_DocNo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_ReviewReferral" name="Review complete referral">
+      <bpmn:incoming>Flow_DocYes</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_CheckDocuments" name="Check patient and clinical documents">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="StartEvent_Referral" name="Referral received">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:association id="Association_ReferralData" sourceRef="DataObjectReference_Referral" targetRef="Task_CheckDocuments" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Referral">
+    <bpmndi:BPMNPlane id="BPMNPlane_Referral" bpmnElement="Collaboration_Referral">
+      <bpmndi:BPMNShape id="Participant_Referrer_di" bpmnElement="Participant_Referrer" isHorizontal="true">
+        <dc:Bounds x="120" y="80" width="2250" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Hospital_di" bpmnElement="Participant_Hospital" isHorizontal="true">
+        <dc:Bounds x="120" y="210" width="2250" height="620" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_OutpatientBookings_di" bpmnElement="Lane_OutpatientBookings" isHorizontal="true">
+        <dc:Bounds x="150" y="610" width="2220" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Consultant_di" bpmnElement="Lane_Consultant" isHorizontal="true">
+        <dc:Bounds x="150" y="430" width="2220" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Secretary_di" bpmnElement="Lane_Secretary" isHorizontal="true">
+        <dc:Bounds x="150" y="210" width="2220" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveReferral_di" bpmnElement="Task_ReceiveReferral">
+        <dc:Bounds x="290" y="250" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_Referral_di" bpmnElement="DataObjectReference_Referral">
+        <dc:Bounds x="470" y="170" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="440" y="146" width="96" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Referral_di" bpmnElement="EndEvent_Referral">
+        <dc:Bounds x="2242" y="735" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2219" y="775" width="87" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BeginBooking_di" bpmnElement="Task_BeginBooking">
+        <dc:Bounds x="1930" y="690" width="180" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UpdateStatus_di" bpmnElement="Task_UpdateStatus">
+        <dc:Bounds x="1690" y="275" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AcceptReferral_di" bpmnElement="Task_AcceptReferral">
+        <dc:Bounds x="1465" y="440" width="150" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NotAccepted_di" bpmnElement="EndEvent_NotAccepted">
+        <dc:Bounds x="1302" y="694" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1291" y="734" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ReferralDecision_di" bpmnElement="Gateway_ReferralDecision" isMarkerVisible="true">
+        <dc:Bounds x="1150" y="460" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1134" y="525" width="93" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveMissingInfo_di" bpmnElement="Task_ReceiveMissingInfo">
+        <dc:Bounds x="1175" y="250" width="190" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestMissingInfo_di" bpmnElement="Task_RequestMissingInfo">
+        <dc:Bounds x="945" y="250" width="170" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DocComplete_di" bpmnElement="Gateway_DocComplete" isMarkerVisible="true">
+        <dc:Bounds x="775" y="270" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="746" y="330" width="93" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewReferral_di" bpmnElement="Task_ReviewReferral">
+        <dc:Bounds x="710" y="475" width="180" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckDocuments_di" bpmnElement="Task_CheckDocuments">
+        <dc:Bounds x="545" y="250" width="170" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Referral_di" bpmnElement="StartEvent_Referral">
+        <dc:Bounds x="202" y="277" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="178" y="323" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_ReferralData_di" bpmnElement="Association_ReferralData">
+        <di:waypoint x="488" y="220" />
+        <di:waypoint x="630" y="238" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="238" y="295" />
+        <di:waypoint x="290" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="430" y="295" />
+        <di:waypoint x="545" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="715" y="295" />
+        <di:waypoint x="775" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DocYes_di" bpmnElement="Flow_DocYes">
+        <di:waypoint x="800" y="320" />
+        <di:waypoint x="800" y="475" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="806" y="385" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_DocNo_di" bpmnElement="Flow_DocNo">
+        <di:waypoint x="825" y="295" />
+        <di:waypoint x="945" y="295" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="879" y="270" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RequestMissing_di" bpmnElement="Flow_RequestMissing">
+        <di:waypoint x="1115" y="295" />
+        <di:waypoint x="1175" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Recheck_di" bpmnElement="Flow_Recheck">
+        <di:waypoint x="1185" y="250" />
+        <di:waypoint x="1185" y="190" />
+        <di:waypoint x="630" y="190" />
+        <di:waypoint x="630" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="890" y="520" />
+        <di:waypoint x="983" y="520" />
+        <di:waypoint x="983" y="485" />
+        <di:waypoint x="1150" y="485" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Accepted_di" bpmnElement="Flow_Accepted">
+        <di:waypoint x="1200" y="485" />
+        <di:waypoint x="1465" y="485" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1316" y="460" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NotAccepted_di" bpmnElement="Flow_NotAccepted">
+        <di:waypoint x="1175" y="510" />
+        <di:waypoint x="1175" y="712" />
+        <di:waypoint x="1302" y="712" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1178" y="626" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1540" y="440" />
+        <di:waypoint x="1540" y="320" />
+        <di:waypoint x="1690" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1770" y="365" />
+        <di:waypoint x="1770" y="740" />
+        <di:waypoint x="1930" y="740" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="2110" y="753" />
+        <di:waypoint x="2176" y="753" />
+        <di:waypoint x="2176" y="750" />
+        <di:waypoint x="2242" y="750" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SendReferral_di" bpmnElement="MessageFlow_SendReferral">
+        <di:waypoint x="360" y="170" />
+        <di:waypoint x="360" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="365" y="174" width="97" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

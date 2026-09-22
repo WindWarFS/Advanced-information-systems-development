@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_Funding" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+  <bpmn:collaboration id="Collaboration_Funding">
+    <bpmn:participant id="Participant_PatientFunder" name="Patient / Funder" />
+    <bpmn:participant id="Participant_PaymentProvider" name="Payment Provider" />
+    <bpmn:participant id="Participant_SchedulingService" name="External Scheduling Service" />
+    <bpmn:participant id="Participant_Hospital" name="Hospital" processRef="Process_Funding" />
+    <bpmn:messageFlow id="MessageFlow_PaymentRequest" name="Payment or funding request" sourceRef="Task_RequestPayment" targetRef="Participant_PatientFunder" />
+    <bpmn:messageFlow id="MessageFlow_PaymentDetails" name="Payment or funding approval" sourceRef="Participant_PatientFunder" targetRef="Participant_PaymentProvider" />
+    <bpmn:messageFlow id="MessageFlow_PaymentConfirmation" name="Payment status" sourceRef="Participant_PaymentProvider" targetRef="Event_PaymentConfirmed" />
+    <bpmn:messageFlow id="MessageFlow_SlotRequest" name="Treatment slot request" sourceRef="Task_RequestSlots" targetRef="Participant_SchedulingService" />
+    <bpmn:messageFlow id="MessageFlow_AvailableSlots" name="Available treatment slots" sourceRef="Participant_SchedulingService" targetRef="Event_SlotsReturned" />
+    <bpmn:messageFlow id="MessageFlow_AppointmentNotice" name="Treatment appointment" sourceRef="Task_NotifyPatient" targetRef="Participant_PatientFunder" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Funding" name="Treatment Funding and Booking - Successful Route" isExecutable="true" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+    <bpmn:laneSet id="LaneSet_Funding">
+      <bpmn:lane id="Lane_TreatmentBookings" name="Treatment / Chemo Bookings Team">
+        <bpmn:flowNodeRef>Task_RecordPending</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RetryPayment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RequestSlots</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_SlotsReturned</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_BookCycles</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_NotifyPatient</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Funding</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Finance" name="Finance Team">
+        <bpmn:flowNodeRef>StartEvent_Funding</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CheckFunding</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RequestPayment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_PaymentConfirmed</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_PaymentStatus</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RecordApproval</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_Funding" name="Treatment request received">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_CheckFunding" name="Check funding">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="Task_RequestPayment" name="Request payment or funding approval">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:intermediateCatchEvent id="Event_PaymentConfirmed" name="Payment status received">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_Payment" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="Gateway_PaymentStatus" name="Payment successful?">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_PaymentYes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_PaymentNo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_RecordApproval" name="Record financial approval">
+      <bpmn:incoming>Flow_PaymentYes</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_RecordPending" name="Record pending payment status">
+      <bpmn:incoming>Flow_PaymentNo</bpmn:incoming>
+      <bpmn:outgoing>Flow_PendingRetry</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_RetryPayment" name="Ask patient to retry payment">
+      <bpmn:incoming>Flow_PendingRetry</bpmn:incoming>
+      <bpmn:outgoing>Flow_RetryStatus</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="Task_RequestSlots" name="Request treatment slots">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:intermediateCatchEvent id="Event_SlotsReturned" name="Slots returned">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_Slots" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Task_BookCycles" name="Book treatment cycles">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="Task_NotifyPatient" name="Notify patient">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_Funding" name="Treatment booked">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_Funding" targetRef="Task_CheckFunding" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_CheckFunding" targetRef="Task_RequestPayment" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_RequestPayment" targetRef="Event_PaymentConfirmed" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Event_PaymentConfirmed" targetRef="Gateway_PaymentStatus" />
+    <bpmn:sequenceFlow id="Flow_PaymentYes" name="Yes" sourceRef="Gateway_PaymentStatus" targetRef="Task_RecordApproval" />
+    <bpmn:sequenceFlow id="Flow_PaymentNo" name="No / pending" sourceRef="Gateway_PaymentStatus" targetRef="Task_RecordPending" />
+    <bpmn:sequenceFlow id="Flow_PendingRetry" sourceRef="Task_RecordPending" targetRef="Task_RetryPayment" />
+    <bpmn:sequenceFlow id="Flow_RetryStatus" sourceRef="Task_RetryPayment" targetRef="Event_PaymentConfirmed" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_RecordApproval" targetRef="Task_RequestSlots" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_RequestSlots" targetRef="Event_SlotsReturned" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Event_SlotsReturned" targetRef="Task_BookCycles" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_BookCycles" targetRef="Task_NotifyPatient" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_NotifyPatient" targetRef="EndEvent_Funding" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Funding">
+    <bpmndi:BPMNPlane id="BPMNPlane_Funding" bpmnElement="Collaboration_Funding">
+      <bpmndi:BPMNShape id="Participant_PatientFunder_di" bpmnElement="Participant_PatientFunder" isHorizontal="true">
+        <dc:Bounds x="160" y="50" width="1990" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_PaymentProvider_di" bpmnElement="Participant_PaymentProvider" isHorizontal="true">
+        <dc:Bounds x="160" y="145" width="1990" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_SchedulingService_di" bpmnElement="Participant_SchedulingService" isHorizontal="true">
+        <dc:Bounds x="160" y="240" width="1990" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Hospital_di" bpmnElement="Participant_Hospital" isHorizontal="true">
+        <dc:Bounds x="160" y="350" width="1990" height="380" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Finance_di" bpmnElement="Lane_Finance" isHorizontal="true">
+        <dc:Bounds x="190" y="350" width="1960" height="190" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_TreatmentBookings_di" bpmnElement="Lane_TreatmentBookings" isHorizontal="true">
+        <dc:Bounds x="190" y="540" width="1960" height="190" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Funding_di" bpmnElement="StartEvent_Funding">
+        <dc:Bounds x="235" y="427" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="205" y="467" width="100" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckFunding_di" bpmnElement="Task_CheckFunding">
+        <dc:Bounds x="320" y="400" width="140" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestPayment_di" bpmnElement="Task_RequestPayment">
+        <dc:Bounds x="520" y="400" width="180" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_PaymentConfirmed_di" bpmnElement="Event_PaymentConfirmed">
+        <dc:Bounds x="760" y="432" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="730" y="472" width="100" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PaymentStatus_di" bpmnElement="Gateway_PaymentStatus" isMarkerVisible="true">
+        <dc:Bounds x="830" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="810" y="480" width="100" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordApproval_di" bpmnElement="Task_RecordApproval">
+        <dc:Bounds x="930" y="400" width="170" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordPending_di" bpmnElement="Task_RecordPending">
+        <dc:Bounds x="930" y="585" width="180" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RetryPayment_di" bpmnElement="Task_RetryPayment">
+        <dc:Bounds x="1160" y="585" width="170" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestSlots_di" bpmnElement="Task_RequestSlots">
+        <dc:Bounds x="1370" y="585" width="170" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_SlotsReturned_di" bpmnElement="Event_SlotsReturned">
+        <dc:Bounds x="1580" y="617" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1550" y="657" width="100" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BookCycles_di" bpmnElement="Task_BookCycles">
+        <dc:Bounds x="1670" y="585" width="160" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyPatient_di" bpmnElement="Task_NotifyPatient">
+        <dc:Bounds x="1870" y="585" width="150" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Funding_di" bpmnElement="EndEvent_Funding">
+        <dc:Bounds x="2050" y="617" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2025" y="657" width="100" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="271" y="445" />
+        <di:waypoint x="320" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="460" y="450" />
+        <di:waypoint x="520" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="700" y="450" />
+        <di:waypoint x="760" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="796" y="450" />
+        <di:waypoint x="830" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PaymentYes_di" bpmnElement="Flow_PaymentYes">
+        <di:waypoint x="880" y="450" />
+        <di:waypoint x="930" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PaymentNo_di" bpmnElement="Flow_PaymentNo">
+        <di:waypoint x="855" y="475" />
+        <di:waypoint x="855" y="635" />
+        <di:waypoint x="930" y="635" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_PendingRetry_di" bpmnElement="Flow_PendingRetry">
+        <di:waypoint x="1110" y="635" />
+        <di:waypoint x="1160" y="635" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_RetryStatus_di" bpmnElement="Flow_RetryStatus">
+        <di:waypoint x="1245" y="585" />
+        <di:waypoint x="1245" y="350" />
+        <di:waypoint x="778" y="350" />
+        <di:waypoint x="778" y="432" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1100" y="450" />
+        <di:waypoint x="1350" y="450" />
+        <di:waypoint x="1350" y="585" />
+        <di:waypoint x="1370" y="585" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1540" y="635" />
+        <di:waypoint x="1580" y="635" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1616" y="635" />
+        <di:waypoint x="1670" y="635" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1830" y="635" />
+        <di:waypoint x="1870" y="635" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="2020" y="635" />
+        <di:waypoint x="2050" y="635" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_PaymentRequest_di" bpmnElement="MessageFlow_PaymentRequest">
+        <di:waypoint x="610" y="400" />
+        <di:waypoint x="610" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="612" y="261" width="96" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_PaymentDetails_di" bpmnElement="MessageFlow_PaymentDetails">
+        <di:waypoint x="790" y="120" />
+        <di:waypoint x="790" y="145" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="822" y="116" width="96" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_PaymentConfirmation_di" bpmnElement="MessageFlow_PaymentConfirmation">
+        <di:waypoint x="778" y="215" />
+        <di:waypoint x="778" y="432" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="782" y="268" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_SlotRequest_di" bpmnElement="MessageFlow_SlotRequest">
+        <di:waypoint x="1455" y="585" />
+        <di:waypoint x="1455" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1465" y="390" width="110" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_AvailableSlots_di" bpmnElement="MessageFlow_AvailableSlots">
+        <di:waypoint x="1598" y="310" />
+        <di:waypoint x="1598" y="617" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1610" y="390" width="120" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_AppointmentNotice_di" bpmnElement="MessageFlow_AppointmentNotice">
+        <di:waypoint x="1945" y="585" />
+        <di:waypoint x="1945" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1959" y="383" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
