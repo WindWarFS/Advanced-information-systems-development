@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "text": "# Arrange Treatment Appointment",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Treatment type",
+      "type": "textfield",
+      "id": "treatment",
+      "key": "treatmentType",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Preferred treatment date",
+      "type": "datetime",
+      "id": "date",
+      "key": "treatmentDate"
+    }
+  ],
+  "type": "default",
+  "id": "Arrange_Treatment_Appointment",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

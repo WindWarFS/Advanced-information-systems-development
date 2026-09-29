@@ -1,0 +1,43 @@
+{
+  "components": [
+    {
+      "text": "# Check Referral Documents",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Referral document status",
+      "values": [
+        {
+          "label": "Complete",
+          "value": "true"
+        },
+        {
+          "label": "Incomplete",
+          "value": false
+        }
+      ],
+      "type": "select",
+      "id": "complete",
+      "key": "referralComplete",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Document check notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "documentCheckNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Check_Referral_Documents",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.1"
+  }
+}

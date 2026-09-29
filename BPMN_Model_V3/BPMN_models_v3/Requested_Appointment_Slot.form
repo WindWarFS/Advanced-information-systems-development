@@ -1,0 +1,34 @@
+{
+  "components": [
+    {
+      "text": "# Requested Appointment Slot",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Requested appointment date",
+      "type": "datetime",
+      "id": "requestedAppointmentDate",
+      "key": "requestedAppointmentDate",
+      "subtype": "date",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Requested appointment time",
+      "type": "datetime",
+      "id": "requestedAppointmentTime",
+      "key": "requestedAppointmentTime",
+      "subtype": "time",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Requested_Appointment_Slot",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

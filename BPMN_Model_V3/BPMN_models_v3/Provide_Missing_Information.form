@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "text": "# Provide Missing Information",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Additional referral information",
+      "type": "textarea",
+      "id": "info",
+      "key": "missingInformation",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Provide_Missing_Information",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

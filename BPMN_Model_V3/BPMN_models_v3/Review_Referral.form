@@ -1,0 +1,47 @@
+{
+  "components": [
+    {
+      "text": "# Review Referral",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Clinical decision",
+      "type": "select",
+      "id": "decision",
+      "key": "clinicalDecision",
+      "values": [
+        {
+          "label": "Accept",
+          "value": "accept"
+        },
+        {
+          "label": "Request more information",
+          "value": "more_information"
+        },
+        {
+          "label": "Reject",
+          "value": "reject"
+        },
+        {
+          "label": "Redirect",
+          "value": "redirect"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Clinical notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "clinicalNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Review_Referral",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

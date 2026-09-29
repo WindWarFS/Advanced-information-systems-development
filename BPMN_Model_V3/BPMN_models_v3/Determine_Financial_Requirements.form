@@ -1,0 +1,38 @@
+{
+  "components": [
+    {
+      "text": "# Determine Financial Requirements",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Patient payment required",
+      "type": "checkbox",
+      "id": "patientPayment",
+      "key": "requiresPatientPayment"
+    },
+    {
+      "label": "Funding approval required",
+      "type": "checkbox",
+      "id": "fundingApproval",
+      "key": "requiresFundingApproval"
+    },
+    {
+      "label": "Coverage review required",
+      "type": "checkbox",
+      "id": "coverageReview",
+      "key": "requiresCoverageReview"
+    },
+    {
+      "label": "Financial notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "financialRequirementsNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Determine_Financial_Requirements",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

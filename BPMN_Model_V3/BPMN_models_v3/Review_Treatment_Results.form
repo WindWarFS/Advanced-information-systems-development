@@ -1,0 +1,47 @@
+{
+  "components": [
+    {
+      "text": "# Review Treatment Results",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Treatment review outcome",
+      "type": "select",
+      "id": "review",
+      "key": "treatmentReview",
+      "values": [
+        {
+          "label": "Continue",
+          "value": "continue"
+        },
+        {
+          "label": "Modify",
+          "value": "modify"
+        },
+        {
+          "label": "Pause",
+          "value": "pause"
+        },
+        {
+          "label": "End treatment",
+          "value": "end"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Treatment review notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "treatmentReviewNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Review_Treatment_Results",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}
