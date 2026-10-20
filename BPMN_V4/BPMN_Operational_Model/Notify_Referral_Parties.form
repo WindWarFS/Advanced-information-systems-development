@@ -1,0 +1,20 @@
+{
+  "components": [
+    {
+      "text": "# Notify Referral Parties",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Notification message",
+      "type": "textarea",
+      "id": "message",
+      "key": "notificationMessage"
+    }
+  ],
+  "type": "default",
+  "id": "Notify_Referral_Parties",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

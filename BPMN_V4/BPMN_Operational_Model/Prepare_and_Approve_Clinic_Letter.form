@@ -1,0 +1,32 @@
+{
+  "components": [
+    {
+      "text": "# Prepare and Approve Clinic Letter",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Clinic letter content",
+      "type": "textarea",
+      "id": "letter",
+      "key": "clinicLetterContent",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Clinic letter is approved",
+      "type": "checkbox",
+      "id": "approved",
+      "key": "clinicLetterApproved",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Prepare_and_Approve_Clinic_Letter",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

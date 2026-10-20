@@ -1,0 +1,39 @@
+{
+  "components": [
+    {
+      "text": "# Review Consent and Authorise Treatment Request",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Authorisation decision",
+      "type": "select",
+      "id": "decision",
+      "key": "treatmentAuthorised",
+      "values": [
+        {
+          "label": "Authorise",
+          "value": true
+        },
+        {
+          "label": "Do not authorise",
+          "value": false
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Authorisation notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "authorisationNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Review_Consent_and_Authorise_Treatment_Request",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

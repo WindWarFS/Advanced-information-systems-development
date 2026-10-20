@@ -1,0 +1,37 @@
+{
+  "components": [
+    {
+      "text": "# Record Financial Clearance",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Financial status",
+      "type": "select",
+      "id": "status",
+      "key": "financialStatus",
+      "values": [
+        {
+          "label": "Cleared",
+          "value": "cleared"
+        },
+        {
+          "label": "Pending",
+          "value": "pending"
+        },
+        {
+          "label": "Failed",
+          "value": "failed"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Record_Financial_Clearance",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

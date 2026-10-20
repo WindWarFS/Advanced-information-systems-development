@@ -1,0 +1,39 @@
+{
+  "components": [
+    {
+      "text": "# Recheck Referral Documents",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Referral document status",
+      "type": "select",
+      "id": "complete",
+      "key": "referralComplete",
+      "values": [
+        {
+          "label": "Complete",
+          "value": true
+        },
+        {
+          "label": "Incomplete",
+          "value": false
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Document review notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "documentReviewNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Recheck_Referral_Documents",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "text": "# Book Initial Appointment",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Patient name",
+      "type": "textfield",
+      "id": "patient",
+      "key": "patientName",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Book_Initial_Appointment",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

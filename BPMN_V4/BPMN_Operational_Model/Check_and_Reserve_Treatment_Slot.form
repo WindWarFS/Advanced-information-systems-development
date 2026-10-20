@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "text": "# Check and Reserve Treatment Slot",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Reserved treatment slot",
+      "type": "textfield",
+      "id": "slot",
+      "key": "reservedTreatmentSlot",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Check_and_Reserve_Treatment_Slot",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

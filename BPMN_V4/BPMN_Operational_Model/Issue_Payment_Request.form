@@ -1,0 +1,39 @@
+{
+  "components": [
+    {
+      "text": "# Issue Payment Request",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Request type",
+      "type": "select",
+      "id": "type",
+      "key": "requestType",
+      "values": [
+        {
+          "label": "Patient payment",
+          "value": "payment"
+        },
+        {
+          "label": "Funding approval",
+          "value": "funding"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Payment request notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "paymentRequestNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Issue_Payment_Request",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

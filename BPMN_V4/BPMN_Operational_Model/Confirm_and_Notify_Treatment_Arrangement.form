@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "text": "# Confirm and Notify Treatment Arrangement",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Treatment arrangement is confirmed",
+      "type": "checkbox",
+      "id": "confirmed",
+      "key": "treatmentArrangementConfirmed",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Treatment arrangement message",
+      "type": "textarea",
+      "id": "message",
+      "key": "treatmentArrangementMessage"
+    }
+  ],
+  "type": "default",
+  "id": "Confirm_and_Notify_Treatment_Arrangement",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

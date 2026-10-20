@@ -1,0 +1,33 @@
+{
+  "components": [
+    {
+      "text": "# Check Appointment Availability",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Suitable Appointment Available?",
+      "type": "select",
+      "id": "suitableAppointmentAvailable",
+      "key": "suitableAppointmentAvailable",
+      "values": [
+        {
+          "label": "Available",
+          "value": "AVAILABLE"
+        },
+        {
+          "label": "Not Available",
+          "value": "NOT_AVAILABLE"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Check_Appointment_Availability",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

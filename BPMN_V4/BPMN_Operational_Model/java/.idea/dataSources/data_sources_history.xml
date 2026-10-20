@@ -1,0 +1,24 @@
+<DataSourcesHistory>
+  <DataSourceFromHistory isRemovedFromProject="false">
+    <data-source source="LOCAL" name="hospital-referral" uuid="c9ae0355-6662-42d5-a95a-e5faeaa2e81f">
+      <database-info product="H2" version="2.4.240 (2025-09-22)" jdbc-version="4.3" driver-name="H2 JDBC Driver" driver-version="2.3.232 (2024-08-11)" dbms="H2" exact-version="2.4.240" exact-driver-version="2.3">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact" />
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:file:$PROJECT_DIR$/data/hospital-referral;AUTO_SERVER=TRUE</jdbc-url>
+      <secret-storage>master_key</secret-storage>
+      <user-name>sa</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </DataSourceFromHistory>
+</DataSourcesHistory>

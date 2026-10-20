@@ -1,0 +1,43 @@
+{
+  "components": [
+    {
+      "text": "# Assess Patient and Explain Options",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Consultation outcome",
+      "type": "select",
+      "id": "outcome",
+      "key": "consultationOutcome",
+      "values": [
+        {
+          "label": "Propose treatment",
+          "value": "treatment"
+        },
+        {
+          "label": "Further assessment required",
+          "value": "assessment"
+        },
+        {
+          "label": "No treatment",
+          "value": "no_treatment"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Assessment notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "assessmentNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Assess_Patient_and_Explain_Options",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

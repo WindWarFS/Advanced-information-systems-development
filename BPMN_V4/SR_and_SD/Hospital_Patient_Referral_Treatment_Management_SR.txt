@@ -1,0 +1,759 @@
+{
+  "actors": [
+    {
+      "id": "7a34dbe1-6eb1-4078-a407-56de77640cef",
+      "text": "External Payment and Funding Providers",
+      "type": "istar.Actor",
+      "x": 1660,
+      "y": 690,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "69524cde-9d03-4272-b58b-02730365d8fa",
+          "text": "Payment or Funding Approved",
+          "type": "istar.Goal",
+          "x": 1810,
+          "y": 730,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "45bf6fd5-c0ef-42f3-8399-476e4c64c2d4",
+          "text": "Process Payment or Funding Request",
+          "type": "istar.Task",
+          "x": 1680,
+          "y": 863,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "31cb9946-8e67-44ac-b52a-40cf3df9514d",
+          "text": "Secure Processing",
+          "type": "istar.Quality",
+          "x": 1810,
+          "y": 1030,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "a963b22d-175c-45fa-81e8-d32b3e8e14fd",
+      "text": "Hospital",
+      "type": "istar.Actor",
+      "x": 833,
+      "y": 84,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "f9e3369f-c040-4688-bf70-e188406c6380",
+          "text": "Patient Referral and Treatment Managed",
+          "type": "istar.Goal",
+          "x": 1026,
+          "y": 96,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "0e3329f8-532f-4739-bef8-8b9ec51e6353",
+          "text": "Assess Referral",
+          "type": "istar.Task",
+          "x": 883,
+          "y": 264,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "d1e5a24c-070f-4a0a-8e77-eb191397531a",
+          "text": "Coordinate Appointment",
+          "type": "istar.Task",
+          "x": 1010,
+          "y": 274,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "529784ad-d190-4f50-978b-e85ff27882b2",
+          "text": "Assess Patient and Propose Treatment",
+          "type": "istar.Task",
+          "x": 1220,
+          "y": 243,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "61e291f9-ccda-4581-a76a-3359db5d918d",
+          "text": "Authorise Treatment",
+          "type": "istar.Task",
+          "x": 883,
+          "y": 444,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "67ccbb99-5846-4fef-a071-181ff359ffe3",
+          "text": "Obtain Financial Clearance",
+          "type": "istar.Task",
+          "x": 1083,
+          "y": 444,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "a3f50f2b-0cf4-41be-aae1-853cf8545822",
+          "text": "Deliver Treatment and Follow-up",
+          "type": "istar.Task",
+          "x": 1283,
+          "y": 442,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "a4b142d6-2a21-4f85-88c3-fa45f26979c0",
+          "text": "Patient Pathway Record",
+          "type": "istar.Resource",
+          "x": 983,
+          "y": 594,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "4e9e262f-6cd2-42ae-a6ae-518e0d4b535e",
+          "text": "Safe and Timely Care",
+          "type": "istar.Quality",
+          "x": 1213,
+          "y": 594,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "ce5d7bc7-546d-48c7-836c-25ed7a73a623",
+      "text": "Patient",
+      "type": "istar.Actor",
+      "x": 40,
+      "y": 690,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "8d1a8e38-7d66-48ce-a084-dca8ab64c3b3",
+          "text": "Treatment Pathway Completed",
+          "type": "istar.Goal",
+          "x": 150,
+          "y": 730,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "82789ca9-9e35-4f19-9fde-cbd196ead5c9",
+          "text": "Confirm Appointment",
+          "type": "istar.Task",
+          "x": 60,
+          "y": 850,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "3185be34-5c6f-4f64-9708-68323c9e0cf9",
+          "text": "Give Informed Consent",
+          "type": "istar.Task",
+          "x": 250,
+          "y": 850,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "198c57b4-b113-4cb5-97b4-cdc50d75bcc2",
+          "text": "Provide Payment or Funding Information",
+          "type": "istar.Task",
+          "x": 60,
+          "y": 990,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "14b2cb73-f588-426d-9ce2-91d8515de365",
+          "text": "Attend Treatment",
+          "type": "istar.Task",
+          "x": 250,
+          "y": 990,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "a35350b9-af51-437a-b411-7f565dc94ae3",
+          "text": "Informed and Timely Care",
+          "type": "istar.Quality",
+          "x": 150,
+          "y": 1130,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "417a1d76-65b2-48be-b489-ea6d41d28a0a",
+      "text": "Referring Organisation",
+      "type": "istar.Actor",
+      "x": 40,
+      "y": 80,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "35007fbd-a056-45ef-b321-be42bd870056",
+          "text": "Referral Managed",
+          "type": "istar.Goal",
+          "x": 150,
+          "y": 120,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "b62b7175-5270-41a0-b1f8-2eedb20a8a41",
+          "text": "Submit Referral",
+          "type": "istar.Task",
+          "x": 70,
+          "y": 240,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "17f291df-01d5-460f-92da-ec6f8a62c5b5",
+          "text": "Provide Missing Information",
+          "type": "istar.Task",
+          "x": 254,
+          "y": 295,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "c572a47e-5ada-40a1-a59e-0143b1a98ad2",
+          "text": "Receive Outcome and Update Pathway",
+          "type": "istar.Task",
+          "x": 150,
+          "y": 380,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "7fe90022-c0b9-426f-aa0a-9f16e488005d",
+          "text": "Referral and Clinical Information",
+          "type": "istar.Resource",
+          "x": 73,
+          "y": 522,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    }
+  ],
+  "orphans": [],
+  "dependencies": [
+    {
+      "id": "f61ea200-2959-4acc-ad04-052b200e0ebb",
+      "text": "Referral and Clinical Information",
+      "type": "istar.Resource",
+      "x": 560,
+      "y": 230,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "0e3329f8-532f-4739-bef8-8b9ec51e6353",
+      "target": "b62b7175-5270-41a0-b1f8-2eedb20a8a41"
+    },
+    {
+      "id": "48f35abf-9e76-46ea-8764-89c4b5ce1df0",
+      "text": "Missing Information Response",
+      "type": "istar.Resource",
+      "x": 560,
+      "y": 350,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "0e3329f8-532f-4739-bef8-8b9ec51e6353",
+      "target": "17f291df-01d5-460f-92da-ec6f8a62c5b5"
+    },
+    {
+      "id": "cfd7a45d-e39e-44be-8572-e91b6b8eeef7",
+      "text": "Referral Decision and Clinic Letter",
+      "type": "istar.Resource",
+      "x": 560,
+      "y": 480,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "c572a47e-5ada-40a1-a59e-0143b1a98ad2",
+      "target": "0e3329f8-532f-4739-bef8-8b9ec51e6353"
+    },
+    {
+      "id": "177e384a-8351-4490-85a5-5ff78632cdc0",
+      "text": "Appointment Details",
+      "type": "istar.Resource",
+      "x": 560,
+      "y": 800,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "82789ca9-9e35-4f19-9fde-cbd196ead5c9",
+      "target": "d1e5a24c-070f-4a0a-8e77-eb191397531a"
+    },
+    {
+      "id": "3389821a-5628-44e3-b305-dff4e24efe72",
+      "text": "Treatment Proposal",
+      "type": "istar.Resource",
+      "x": 560,
+      "y": 900,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "3185be34-5c6f-4f64-9708-68323c9e0cf9",
+      "target": "529784ad-d190-4f50-978b-e85ff27882b2"
+    },
+    {
+      "id": "b7e51956-5c56-4141-a80f-483fcad05dc6",
+      "text": "Consent Decision",
+      "type": "istar.Goal",
+      "x": 560,
+      "y": 1010,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "61e291f9-ccda-4581-a76a-3359db5d918d",
+      "target": "3185be34-5c6f-4f64-9708-68323c9e0cf9"
+    },
+    {
+      "id": "770eff4a-d26f-4b4c-90a0-3bb292dcfba7",
+      "text": "Payment or Funding Information",
+      "type": "istar.Resource",
+      "x": 724,
+      "y": 1070,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "67ccbb99-5846-4fef-a071-181ff359ffe3",
+      "target": "198c57b4-b113-4cb5-97b4-cdc50d75bcc2"
+    },
+    {
+      "id": "d5450e61-c6b6-4aa6-8c84-f9e3536f6647",
+      "text": "Treatment Arrangement",
+      "type": "istar.Resource",
+      "x": 760,
+      "y": 1210,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "14b2cb73-f588-426d-9ce2-91d8515de365",
+      "target": "a3f50f2b-0cf4-41be-aae1-853cf8545822"
+    },
+    {
+      "id": "34e9056d-5499-475e-b884-91ce8bb09612",
+      "text": "Financial Approval Result",
+      "type": "istar.Resource",
+      "x": 1510,
+      "y": 910,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "67ccbb99-5846-4fef-a071-181ff359ffe3",
+      "target": "45bf6fd5-c0ef-42f3-8399-476e4c64c2d4"
+    }
+  ],
+  "links": [
+    {
+      "id": "56c8849e-c268-4d7f-85d5-f15a51d3eb40",
+      "type": "istar.DependencyLink",
+      "source": "34e9056d-5499-475e-b884-91ce8bb09612",
+      "target": "45bf6fd5-c0ef-42f3-8399-476e4c64c2d4"
+    },
+    {
+      "id": "1f869f2b-db16-4689-84b8-2137ea1c2c53",
+      "type": "istar.DependencyLink",
+      "source": "67ccbb99-5846-4fef-a071-181ff359ffe3",
+      "target": "34e9056d-5499-475e-b884-91ce8bb09612"
+    },
+    {
+      "id": "dfca294e-1eca-4d18-bc20-539fd229b65f",
+      "type": "istar.DependencyLink",
+      "source": "d5450e61-c6b6-4aa6-8c84-f9e3536f6647",
+      "target": "a3f50f2b-0cf4-41be-aae1-853cf8545822"
+    },
+    {
+      "id": "92f0725b-d7d5-41cd-a5d3-e44898c2d4f6",
+      "type": "istar.DependencyLink",
+      "source": "14b2cb73-f588-426d-9ce2-91d8515de365",
+      "target": "d5450e61-c6b6-4aa6-8c84-f9e3536f6647"
+    },
+    {
+      "id": "49ce947a-47df-43ea-a15e-380bede6f6d5",
+      "type": "istar.DependencyLink",
+      "source": "770eff4a-d26f-4b4c-90a0-3bb292dcfba7",
+      "target": "198c57b4-b113-4cb5-97b4-cdc50d75bcc2"
+    },
+    {
+      "id": "265c0364-9fe3-4793-8222-a7a6cde0e01a",
+      "type": "istar.DependencyLink",
+      "source": "67ccbb99-5846-4fef-a071-181ff359ffe3",
+      "target": "770eff4a-d26f-4b4c-90a0-3bb292dcfba7"
+    },
+    {
+      "id": "a2ed7714-63f2-40cf-9878-7754dda12cc8",
+      "type": "istar.DependencyLink",
+      "source": "b7e51956-5c56-4141-a80f-483fcad05dc6",
+      "target": "3185be34-5c6f-4f64-9708-68323c9e0cf9"
+    },
+    {
+      "id": "c6a78d27-a46a-456b-9906-6e1ac90cc908",
+      "type": "istar.DependencyLink",
+      "source": "61e291f9-ccda-4581-a76a-3359db5d918d",
+      "target": "b7e51956-5c56-4141-a80f-483fcad05dc6"
+    },
+    {
+      "id": "b4fc34b9-9f12-46a9-ba10-bd7c14d1dee4",
+      "type": "istar.DependencyLink",
+      "source": "3389821a-5628-44e3-b305-dff4e24efe72",
+      "target": "529784ad-d190-4f50-978b-e85ff27882b2"
+    },
+    {
+      "id": "a3858c39-23f5-4b74-923b-c0364b2ae84c",
+      "type": "istar.DependencyLink",
+      "source": "3185be34-5c6f-4f64-9708-68323c9e0cf9",
+      "target": "3389821a-5628-44e3-b305-dff4e24efe72"
+    },
+    {
+      "id": "2f72e77a-3264-489e-ac8d-6e7a8551efca",
+      "type": "istar.DependencyLink",
+      "source": "177e384a-8351-4490-85a5-5ff78632cdc0",
+      "target": "d1e5a24c-070f-4a0a-8e77-eb191397531a"
+    },
+    {
+      "id": "b5c41dfd-8e9d-4ab8-bb4b-0f885451b9d4",
+      "type": "istar.DependencyLink",
+      "source": "82789ca9-9e35-4f19-9fde-cbd196ead5c9",
+      "target": "177e384a-8351-4490-85a5-5ff78632cdc0"
+    },
+    {
+      "id": "4d2b1ae3-845a-45a8-bd6a-2ff2e65d0e1c",
+      "type": "istar.DependencyLink",
+      "source": "cfd7a45d-e39e-44be-8572-e91b6b8eeef7",
+      "target": "0e3329f8-532f-4739-bef8-8b9ec51e6353"
+    },
+    {
+      "id": "ca1a7737-04dc-4b9e-a5c2-765931713a5e",
+      "type": "istar.DependencyLink",
+      "source": "c572a47e-5ada-40a1-a59e-0143b1a98ad2",
+      "target": "cfd7a45d-e39e-44be-8572-e91b6b8eeef7"
+    },
+    {
+      "id": "40c93831-4b5c-43fd-8434-989d08ab80db",
+      "type": "istar.DependencyLink",
+      "source": "48f35abf-9e76-46ea-8764-89c4b5ce1df0",
+      "target": "17f291df-01d5-460f-92da-ec6f8a62c5b5"
+    },
+    {
+      "id": "5c461763-3b34-4e1f-94a4-8beac7bdcfd0",
+      "type": "istar.DependencyLink",
+      "source": "0e3329f8-532f-4739-bef8-8b9ec51e6353",
+      "target": "48f35abf-9e76-46ea-8764-89c4b5ce1df0"
+    },
+    {
+      "id": "273b0dbd-b201-4245-87d3-36b36da9ad45",
+      "type": "istar.DependencyLink",
+      "source": "f61ea200-2959-4acc-ad04-052b200e0ebb",
+      "target": "b62b7175-5270-41a0-b1f8-2eedb20a8a41"
+    },
+    {
+      "id": "d994f13f-9740-4a5f-9743-0c5cc926a6a1",
+      "type": "istar.DependencyLink",
+      "source": "0e3329f8-532f-4739-bef8-8b9ec51e6353",
+      "target": "f61ea200-2959-4acc-ad04-052b200e0ebb"
+    },
+    {
+      "id": "c30813d1-92c0-4fe0-8585-6a78eee5ff7e",
+      "type": "istar.AndRefinementLink",
+      "source": "b62b7175-5270-41a0-b1f8-2eedb20a8a41",
+      "target": "35007fbd-a056-45ef-b321-be42bd870056"
+    },
+    {
+      "id": "a855eb72-b986-4391-b8c9-5c0b7f2fb85a",
+      "type": "istar.AndRefinementLink",
+      "source": "17f291df-01d5-460f-92da-ec6f8a62c5b5",
+      "target": "35007fbd-a056-45ef-b321-be42bd870056"
+    },
+    {
+      "id": "601c0bd4-102b-4ce2-ab8d-f1f24475cb2f",
+      "type": "istar.AndRefinementLink",
+      "source": "c572a47e-5ada-40a1-a59e-0143b1a98ad2",
+      "target": "35007fbd-a056-45ef-b321-be42bd870056"
+    },
+    {
+      "id": "0b7228f9-e26f-4c9b-be9a-39b0abfd80bd",
+      "type": "istar.NeededByLink",
+      "source": "7fe90022-c0b9-426f-aa0a-9f16e488005d",
+      "target": "b62b7175-5270-41a0-b1f8-2eedb20a8a41"
+    },
+    {
+      "id": "e7f21e67-710f-445e-b023-5b13aa99553d",
+      "type": "istar.AndRefinementLink",
+      "source": "82789ca9-9e35-4f19-9fde-cbd196ead5c9",
+      "target": "8d1a8e38-7d66-48ce-a084-dca8ab64c3b3"
+    },
+    {
+      "id": "69bca7e1-aa48-4eaa-9f97-758706ba37b4",
+      "type": "istar.AndRefinementLink",
+      "source": "3185be34-5c6f-4f64-9708-68323c9e0cf9",
+      "target": "8d1a8e38-7d66-48ce-a084-dca8ab64c3b3"
+    },
+    {
+      "id": "da2fd177-13db-4b57-a1c5-b013358432e7",
+      "type": "istar.AndRefinementLink",
+      "source": "198c57b4-b113-4cb5-97b4-cdc50d75bcc2",
+      "target": "8d1a8e38-7d66-48ce-a084-dca8ab64c3b3"
+    },
+    {
+      "id": "613369a8-fcce-40f9-b365-1e8626c4c7c6",
+      "type": "istar.AndRefinementLink",
+      "source": "14b2cb73-f588-426d-9ce2-91d8515de365",
+      "target": "8d1a8e38-7d66-48ce-a084-dca8ab64c3b3"
+    },
+    {
+      "id": "ccd3b209-ad2a-42c8-9e10-a47b63c0768c",
+      "type": "istar.ContributionLink",
+      "source": "3185be34-5c6f-4f64-9708-68323c9e0cf9",
+      "target": "a35350b9-af51-437a-b411-7f565dc94ae3",
+      "label": "help"
+    },
+    {
+      "id": "a2bb387f-d2c7-4017-96df-0f607a3fab3f",
+      "type": "istar.QualificationLink",
+      "source": "a35350b9-af51-437a-b411-7f565dc94ae3",
+      "target": "8d1a8e38-7d66-48ce-a084-dca8ab64c3b3"
+    },
+    {
+      "id": "3aa99fe1-1267-48f6-828c-f57f155b2af1",
+      "type": "istar.AndRefinementLink",
+      "source": "0e3329f8-532f-4739-bef8-8b9ec51e6353",
+      "target": "f9e3369f-c040-4688-bf70-e188406c6380"
+    },
+    {
+      "id": "328115d7-1139-483a-a15c-44c9cf9d7720",
+      "type": "istar.AndRefinementLink",
+      "source": "d1e5a24c-070f-4a0a-8e77-eb191397531a",
+      "target": "f9e3369f-c040-4688-bf70-e188406c6380"
+    },
+    {
+      "id": "1badd145-4a27-46f3-9fc9-bdbbb8600a66",
+      "type": "istar.AndRefinementLink",
+      "source": "529784ad-d190-4f50-978b-e85ff27882b2",
+      "target": "f9e3369f-c040-4688-bf70-e188406c6380"
+    },
+    {
+      "id": "6ea70de5-6d51-44df-a8bc-1f18669e7da3",
+      "type": "istar.AndRefinementLink",
+      "source": "61e291f9-ccda-4581-a76a-3359db5d918d",
+      "target": "f9e3369f-c040-4688-bf70-e188406c6380"
+    },
+    {
+      "id": "220d7788-2bdd-4550-8f4d-018e7a5f9680",
+      "type": "istar.AndRefinementLink",
+      "source": "67ccbb99-5846-4fef-a071-181ff359ffe3",
+      "target": "f9e3369f-c040-4688-bf70-e188406c6380"
+    },
+    {
+      "id": "925da827-c909-480b-a2bd-3f73dbc349ac",
+      "type": "istar.AndRefinementLink",
+      "source": "a3f50f2b-0cf4-41be-aae1-853cf8545822",
+      "target": "f9e3369f-c040-4688-bf70-e188406c6380"
+    },
+    {
+      "id": "09346ae1-6d16-420a-b832-b2dee0b16cb9",
+      "type": "istar.NeededByLink",
+      "source": "a4b142d6-2a21-4f85-88c3-fa45f26979c0",
+      "target": "0e3329f8-532f-4739-bef8-8b9ec51e6353"
+    },
+    {
+      "id": "4d134aa9-6f9e-460d-808f-0b7d6b38aea5",
+      "type": "istar.NeededByLink",
+      "source": "a4b142d6-2a21-4f85-88c3-fa45f26979c0",
+      "target": "a3f50f2b-0cf4-41be-aae1-853cf8545822"
+    },
+    {
+      "id": "251594d8-ee13-4527-a891-7d60e9bf4d87",
+      "type": "istar.ContributionLink",
+      "source": "529784ad-d190-4f50-978b-e85ff27882b2",
+      "target": "4e9e262f-6cd2-42ae-a6ae-518e0d4b535e",
+      "label": "help"
+    },
+    {
+      "id": "6eb9d27e-cb8d-4412-8cf3-50b8f0d7632e",
+      "type": "istar.ContributionLink",
+      "source": "61e291f9-ccda-4581-a76a-3359db5d918d",
+      "target": "4e9e262f-6cd2-42ae-a6ae-518e0d4b535e",
+      "label": "make"
+    },
+    {
+      "id": "ab1a7743-0690-4c50-bc9e-168539587e68",
+      "type": "istar.ContributionLink",
+      "source": "a3f50f2b-0cf4-41be-aae1-853cf8545822",
+      "target": "4e9e262f-6cd2-42ae-a6ae-518e0d4b535e",
+      "label": "make"
+    },
+    {
+      "id": "30ae665a-9121-4df5-94bc-38f36f6d1dd3",
+      "type": "istar.QualificationLink",
+      "source": "4e9e262f-6cd2-42ae-a6ae-518e0d4b535e",
+      "target": "f9e3369f-c040-4688-bf70-e188406c6380"
+    },
+    {
+      "id": "ae4d1327-0063-4bb0-8e95-652643cfabd3",
+      "type": "istar.AndRefinementLink",
+      "source": "45bf6fd5-c0ef-42f3-8399-476e4c64c2d4",
+      "target": "69524cde-9d03-4272-b58b-02730365d8fa"
+    },
+    {
+      "id": "89fb4d0e-dbab-42cb-a8b3-72182c2efc0b",
+      "type": "istar.ContributionLink",
+      "source": "45bf6fd5-c0ef-42f3-8399-476e4c64c2d4",
+      "target": "31cb9946-8e67-44ac-b52a-40cf3df9514d",
+      "label": "make"
+    },
+    {
+      "id": "a4fb2663-5665-42c8-93cf-490587a3c19d",
+      "type": "istar.QualificationLink",
+      "source": "31cb9946-8e67-44ac-b52a-40cf3df9514d",
+      "target": "69524cde-9d03-4272-b58b-02730365d8fa"
+    }
+  ],
+  "display": {
+    "7a34dbe1-6eb1-4078-a407-56de77640cef": {
+      "backgroundColor": "#F7E8D5"
+    },
+    "69524cde-9d03-4272-b58b-02730365d8fa": {
+      "width": 108.95602416992188,
+      "height": 49.0069580078125
+    },
+    "45bf6fd5-c0ef-42f3-8399-476e4c64c2d4": {
+      "width": 131.95602416992188,
+      "height": 85.0069580078125
+    },
+    "a963b22d-175c-45fa-81e8-d32b3e8e14fd": {
+      "backgroundColor": "#D9EAF7"
+    },
+    "f9e3369f-c040-4688-bf70-e188406c6380": {
+      "width": 127.51156616210938,
+      "height": 65.7476806640625
+    },
+    "0e3329f8-532f-4739-bef8-8b9ec51e6353": {
+      "width": 111.51156616210938,
+      "height": 56.1180534362793
+    },
+    "d1e5a24c-070f-4a0a-8e77-eb191397531a": {
+      "width": 114.51156616210938,
+      "height": 47.7476806640625
+    },
+    "529784ad-d190-4f50-978b-e85ff27882b2": {
+      "width": 141.51156616210938,
+      "height": 64.7476806640625
+    },
+    "67ccbb99-5846-4fef-a071-181ff359ffe3": {
+      "width": 107.51156616210938,
+      "height": 47.7476806640625
+    },
+    "a3f50f2b-0cf4-41be-aae1-853cf8545822": {
+      "width": 106.51156616210938,
+      "height": 51.7476806640625
+    },
+    "a4b142d6-2a21-4f85-88c3-fa45f26979c0": {
+      "width": 108.51156616210938,
+      "height": 51.7476806640625
+    },
+    "ce5d7bc7-546d-48c7-836c-25ed7a73a623": {
+      "backgroundColor": "#F7E8D5"
+    },
+    "198c57b4-b113-4cb5-97b4-cdc50d75bcc2": {
+      "width": 117.77082633972168,
+      "height": 80.56253051757812
+    },
+    "417a1d76-65b2-48be-b489-ea6d41d28a0a": {
+      "backgroundColor": "#F7E8D5"
+    },
+    "b62b7175-5270-41a0-b1f8-2eedb20a8a41": {
+      "width": 110.51156616210938,
+      "height": 51.1180534362793
+    },
+    "17f291df-01d5-460f-92da-ec6f8a62c5b5": {
+      "width": 105.51156616210938,
+      "height": 56.1180534362793
+    },
+    "c572a47e-5ada-40a1-a59e-0143b1a98ad2": {
+      "width": 139.51156616210938,
+      "height": 84.1180534362793
+    },
+    "7fe90022-c0b9-426f-aa0a-9f16e488005d": {
+      "width": 118.51156616210938,
+      "height": 55.1180534362793
+    },
+    "f61ea200-2959-4acc-ad04-052b200e0ebb": {
+      "width": 114.51156616210938,
+      "height": 53.7476806640625
+    },
+    "48f35abf-9e76-46ea-8764-89c4b5ce1df0": {
+      "width": 102.51156616210938,
+      "height": 47.7476806640625
+    },
+    "cfd7a45d-e39e-44be-8572-e91b6b8eeef7": {
+      "width": 113.51156616210938,
+      "height": 56.7476806640625
+    },
+    "770eff4a-d26f-4b4c-90a0-3bb292dcfba7": {
+      "width": 112.51156616210938,
+      "height": 53.0810546875
+    },
+    "34e9056d-5499-475e-b884-91ce8bb09612": {
+      "width": 108.95602416992188,
+      "height": 60.0069580078125
+    }
+  },
+  "tool": "pistar.2.1.0",
+  "istar": "2.0",
+  "saveDate": "Fri, 16 Oct 2026 07:37:53 GMT",
+  "diagram": {
+    "width": 2150,
+    "height": 1350,
+    "name": "Hospital Patient Referral and Treatment Management SR Model - Simplified",
+    "customProperties": {
+      "Description": ""
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "text": "# Arrange Further Assessment",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Further assessment plan",
+      "type": "textarea",
+      "id": "plan",
+      "key": "furtherAssessmentPlan",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Arrange_Further_Assessment",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

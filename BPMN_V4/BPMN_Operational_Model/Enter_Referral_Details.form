@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "text": "# Enter Referral Details",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Patient Name",
+      "type": "textfield",
+      "id": "patientName",
+      "key": "patientName",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Referral Notes",
+      "type": "textarea",
+      "id": "referralNotes",
+      "key": "referralNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Enter_Referral_Details",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

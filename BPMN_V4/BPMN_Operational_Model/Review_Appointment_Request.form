@@ -1,0 +1,43 @@
+{
+  "components": [
+    {
+      "text": "# Review Appointment Request",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Appointment decision",
+      "type": "select",
+      "id": "decision",
+      "key": "appointmentDecision",
+      "values": [
+        {
+          "label": "Confirm",
+          "value": "confirm"
+        },
+        {
+          "label": "Request a change",
+          "value": "change"
+        },
+        {
+          "label": "Cancel",
+          "value": "cancel"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Appointment notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "appointmentNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Review_Appointment_Request",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

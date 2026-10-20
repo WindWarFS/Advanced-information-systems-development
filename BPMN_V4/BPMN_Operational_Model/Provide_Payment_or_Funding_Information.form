@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "text": "# Provide Payment or Funding Information",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Payment or funding information",
+      "type": "textarea",
+      "id": "info",
+      "key": "financialInformation",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Provide_Payment_or_Funding_Information",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

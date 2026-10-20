@@ -1,0 +1,39 @@
+{
+  "components": [
+    {
+      "text": "# Submit Consent Decision",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Consent decision",
+      "type": "select",
+      "id": "decision",
+      "key": "consentDecision",
+      "values": [
+        {
+          "label": "Consent",
+          "value": "consent"
+        },
+        {
+          "label": "Refuse",
+          "value": "refuse"
+        }
+      ],
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Patient notes",
+      "type": "textarea",
+      "id": "notes",
+      "key": "consentNotes"
+    }
+  ],
+  "type": "default",
+  "id": "Submit_Consent_Decision",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}

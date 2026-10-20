@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "text": "# Send Letter and Arrange Follow-up",
+      "type": "text",
+      "id": "title"
+    },
+    {
+      "label": "Follow-up plan",
+      "type": "textarea",
+      "id": "followUp",
+      "key": "followUpPlan",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Send_Letter_and_Arrange_Follow_up",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19
+}
